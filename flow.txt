@@ -1,0 +1,12 @@
+The Flow
+User submits code → Backend creates a submission with status Queued
+Backend dispatches job → Pushes job to Redis judge:jobs queue
+Judge-box pulls job → Reads from judge:jobs
+Judge-box gets Docker image → Uses image like gcc:10, python:3.10, etc.
+Judge-box runs submission → Executes code inside Docker container with:
+Mounted submission files
+Memory limit (e.g., 256MB)
+Time limit (e.g., 1 second)
+Judge-box compares output → Runs checker script to validate output
+Judge-box pushes result → Writes to Redis judge:results queue
+Backend consumer reads result → Updates submission with verdict, time, memory
